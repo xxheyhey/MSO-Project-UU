@@ -8,7 +8,7 @@ The methods can be included in the domain model if it is necessary for the
 clarity of the model (see assignment details).
 
 - Character
-  - properties:
+  - attributes:
     - -name: string
     - -position: (int, int)
     - -orientation: string
@@ -19,13 +19,13 @@ clarity of the model (see assignment details).
     - Turn
       - +direction: string
     - Move
-      - properties:
+      - attributes:
         - +steps: int
     - Repeat
-      - properties:
+      - attributes:
         - +commands: \[Command\]
 - Program
-  - properties:
+  - attributes:
     - -name: string
     - -commands: \[Command\]
     - +Examples: \[Program\] (static property)
