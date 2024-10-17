@@ -2,9 +2,9 @@
 
 namespace MSO_Project
 {
-    class Program
+    internal static class Program
     {
-        static void Main()
+        private static void Main()
         {
             Console.WriteLine("Hello, World!");
         }
