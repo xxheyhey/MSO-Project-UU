@@ -1,18 +1,18 @@
 ```mermaid
 classDiagram
-    Command --* Program
+    Command --* Game
     Command <|-- Turn
     Command <|-- Move
     Command <|-- Repeat
     Command --* Repeat
-    Character --* Program
+    Character --* Game
 
     class Command{
-        <<Abstrtact>>
-        +Execute()
+        <<Abstract>>
+        +Execute(Character character)
     }
     class Turn{
-        -String direction
+        -string direction
     }
     class Move{
         -int steps
@@ -22,15 +22,15 @@ classDiagram
         -List~Command~ commands
     }
     class Character{
-        -String name
-        +Tuple~int,int~ Position
-        +String Orientation
+        -string name
+        +(int,int) Position
+        +string Orientation
     }
-    class Program{
-        -String name
+    class Game{
+        -string name
         -Character character
         -List~Command~ commands
-        +List~Program~ Examples$
+        +List~Game~ Examples$
         +Execute() void
         +CalculateMetrics() void
         +Import(String file) void

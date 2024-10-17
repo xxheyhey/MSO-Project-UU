@@ -4,3 +4,4 @@
 - change uppercase to lowercase in models
 - change Program to Game
 - change tuple to ()
+- remove name from character?
