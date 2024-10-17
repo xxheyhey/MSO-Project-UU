@@ -6,8 +6,8 @@ namespace MSO_Project
     {
         private static void Main()
         {
-            Console.WriteLine("Hello, World!");
-            //test
+            Game game = Game.Examples[0];
+            game.Execute();
         }
     }
 }
