@@ -1,4 +1,6 @@
-﻿namespace MSO_Project
+﻿using System;
+
+namespace MSO_Project
 {
     class Program
     {
