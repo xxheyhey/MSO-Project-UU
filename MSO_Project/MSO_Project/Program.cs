@@ -1,12 +1,10 @@
-﻿using System;
-
-namespace MSO_Project
+﻿namespace MSO_Project
 {
     internal static class Program
     {
         private static void Main()
         {
-            Game game = Game.Examples[0];
+            Game game = Game.Examples[1];
             game.Execute();
         }
     }

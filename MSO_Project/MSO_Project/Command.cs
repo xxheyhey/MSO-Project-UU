@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 
 namespace MSO_Project;
@@ -14,17 +12,17 @@ public abstract class Command
 public class Turn(string direction) : Command
 {
     private string direction { get; set; } = direction;
-    
+
     public override void Execute(Character character)
     {
         if (direction == "right")
         {
             character.Orientation = character.Orientation switch
             {
-                "right" => "down",
-                "left" => "up",
-                "up" => "right",
-                "down" => "left",
+                "east" => "south",
+                "west" => "north",
+                "north" => "east",
+                "south" => "west",
                 _ => character.Orientation
             };
         }
@@ -32,10 +30,10 @@ public class Turn(string direction) : Command
         {
             character.Orientation = character.Orientation switch
             {
-                "right" => "up",
-                "left" => "down",
-                "up" => "left",
-                "down" => "right",
+                "east" => "north",
+                "west" => "south",
+                "north" => "west",
+                "south" => "east",
                 _ => character.Orientation
             };
         }
@@ -57,14 +55,14 @@ public class Move(int steps) : Command
 
         character.Position = character.Orientation switch
         {
-            "right" => (x + steps, y),
-            "left" => (x - steps, y),
-            "up" => (x, y + steps),
-            "down" => (x, y - steps),
+            "east" => (x + steps, y),
+            "west" => (x - steps, y),
+            "north" => (x, y + steps),
+            "south" => (x, y - steps),
             _ => character.Position
         };
     }
-    
+
     public override string ToString()
     {
         return $"Move {steps}";
@@ -75,7 +73,7 @@ public class Repeat(int iterations, List<Command> commands) : Command
 {
     private int iterations { get; set; } = iterations;
     private List<Command> commands { get; set; } = commands;
-    
+
     public override void Execute(Character character)
     {
         for (int i = 0; i < iterations; i++)
@@ -86,10 +84,17 @@ public class Repeat(int iterations, List<Command> commands) : Command
             }
         }
     }
-    
+
     public override string ToString()
     {
-        var comms = from com in commands select com.ToString();
-        return $"Repeat {iterations} ({string.Join(", ", comms)})";
+        List<string> comms = new List<string>();
+        for (int i = 0; i < iterations; i++)
+        {
+            foreach (Command c in commands)
+            {
+                comms.Add(c.ToString());
+            }
+        }
+        return $"{string.Join(", ", comms)}";
     }
 }

@@ -1,5 +1,3 @@
-using System;
-
 namespace MSO_Project;
 
 public class Character(string name, (int, int) position, string orientation)
