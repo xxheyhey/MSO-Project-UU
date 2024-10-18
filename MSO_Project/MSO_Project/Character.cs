@@ -1,8 +1,7 @@
 namespace MSO_Project;
 
-public class Character(string name, (int, int) position, string orientation)
+public class Character()
 {
-    private string _name = name;
-    public (int, int) Position { get; set; } = position;
-    public string Orientation { get; set; } = orientation;
+    public (int, int) Position { get; set; } = (0,0);
+    public string Orientation { get; set; } = "east";
 }

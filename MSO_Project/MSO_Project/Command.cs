@@ -7,18 +7,18 @@ namespace MSO_Project;
 public abstract class Command
 {
     public abstract void Execute(Character character);
-    public abstract int NumberOfCommands();
-    public abstract int MaxNestingLevel();
+    public abstract int NumberOfCommands(); // Needed to calculate the total number of commands of a game
+    public abstract int MaxNestingLevel(); // Needed to calculate the maximum nesting level of a game
     public abstract override string ToString();
 }
 
 public class Turn(string direction) : Command
 {
-    private string direction { get; set; } = direction;
+    private string _direction { get; } = direction;
 
     public override void Execute(Character character)
     {
-        if (direction == "right")
+        if (_direction == "right")
         {
             character.Orientation = character.Orientation switch
             {
@@ -29,7 +29,7 @@ public class Turn(string direction) : Command
                 _ => character.Orientation
             };
         }
-        else if (direction == "left")
+        else if (_direction == "left")
         {
             character.Orientation = character.Orientation switch
             {
@@ -47,13 +47,13 @@ public class Turn(string direction) : Command
 
     public override string ToString()
     {
-        return $"Turn {direction}";
+        return $"Turn {_direction}";
     }
 }
 
 public class Move(int steps) : Command
 {
-    private int steps { get; set; } = steps;
+    private int _steps { get; } = steps;
 
     public override void Execute(Character character)
     {
@@ -61,10 +61,10 @@ public class Move(int steps) : Command
 
         character.Position = character.Orientation switch
         {
-            "east" => (x + steps, y),
-            "west" => (x - steps, y),
-            "north" => (x, y + steps),
-            "south" => (x, y - steps),
+            "east" => (x + _steps, y),
+            "west" => (x - _steps, y),
+            "north" => (x, y + _steps),
+            "south" => (x, y - _steps),
             _ => character.Position
         };
     }
@@ -74,7 +74,7 @@ public class Move(int steps) : Command
 
     public override string ToString()
     {
-        return $"Move {steps}";
+        return $"Move {_steps}";
     }
 }
 
@@ -107,10 +107,10 @@ public class Repeat(int iterations, List<Command> commands) : Command
 
     public override int MaxNestingLevel()
     {
-        int maxNesting = 1; // Current level
+        int maxNesting = 1;
         foreach (var command in Commands)
         {
-            maxNesting = Math.Max(maxNesting, command.MaxNestingLevel() + 1); // +1 for each Repeat nesting
+            maxNesting = Math.Max(maxNesting, command.MaxNestingLevel() + 1);
         }
 
         return maxNesting;

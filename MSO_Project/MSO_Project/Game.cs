@@ -7,13 +7,13 @@ namespace MSO_Project;
 
 public class Game(string name, Character character, List<Command> commands)
 {
-    private string _name { get; set; } = name;
-    private Character _character { get; set; } = character;
-    private List<Command> _commands { get; set; } = commands;
+    private string _name { get; } = name;
+    private Character _character { get; } = character;
+    private List<Command> _commands { get; } = commands;
 
     public static List<Game> Examples = new List<Game>
     {
-        new Game("beginner", new Character("Tester", (0, 0), "east"), [
+        new Game("beginner", new Character(), [
             new Move(10),
             new Turn("right"),
             new Move(10),
@@ -22,13 +22,16 @@ public class Game(string name, Character character, List<Command> commands)
             new Move(10),
             new Turn("right")
         ]),
-        new Game("intermediate", new Character("Tester", (0, 0), "east"), [
+        new Game("intermediate", new Character(), [
             new Repeat(4, [
                 new Move(10),
+                new Turn("left"),
+                new Turn("left"),
+                new Move(7),
                 new Turn("right")
             ])
         ]),
-        new Game("advanced", new Character("Tester", (0, 0), "east"), [
+        new Game("advanced", new Character(), [
             new Move(5),
             new Turn("left"),
             new Turn("left"),
@@ -53,32 +56,32 @@ public class Game(string name, Character character, List<Command> commands)
     {
         int GetMaxNestingLevel(List<Command> commands)
         {
-            int maxNestingLevel = 1; // Start at level 1 for non-nested commands
+            int maxNestingLevel = 1; // Minimum of 1 for programs without repeats
 
             foreach (var command in commands)
             {
-                maxNestingLevel = Math.Max(maxNestingLevel, command.MaxNestingLevel()); // Compare and get the maximum level
+                maxNestingLevel = Math.Max(maxNestingLevel, command.MaxNestingLevel());
             }
 
             return maxNestingLevel;
         }
+
         int CountRepeatCommands(List<Command> commands)
         {
             int repeatCount = 0;
 
             foreach (var command in commands)
             {
-                if (command is Repeat repeatCommand) // Check if it's a Repeat command
+                if (command is Repeat repeatCommand)
                 {
-                    repeatCount++; // Increment the count
-                    // Recursively count Repeat commands in the subcommands
-                    repeatCount += CountRepeatCommands(repeatCommand.Commands); 
+                    repeatCount++;
+                    repeatCount += CountRepeatCommands(repeatCommand.Commands);
                 }
             }
 
             return repeatCount;
         }
-        
+
         int maxNestingLevel = GetMaxNestingLevel(_commands);
         int numberofRepeats = CountRepeatCommands(_commands);
         int numberOfCommands = 0;
@@ -95,7 +98,7 @@ public class Game(string name, Character character, List<Command> commands)
 
     public static Game Import(string file)
     {
-        Game game = new Game(file, new Character("John Doe", (0, 0), "east"), new List<Command>());
+        Game game = new Game(file, new Character(), new List<Command>());
 
         foreach (string line in File.ReadLines(file))
         {
@@ -113,6 +116,8 @@ public class Game(string name, Character character, List<Command> commands)
     public override string ToString()
     {
         var comms = from com in _commands select com.ToString();
-        return $"{string.Join(", ", comms)}.\nEnd state {_character.Position} facing {_character.Orientation}.";
+        return $"Program: {_name}\n"
+               + $"{string.Join(", ", comms)}.\n"
+               + $"End state {_character.Position} facing {_character.Orientation}.";
     }
 }
