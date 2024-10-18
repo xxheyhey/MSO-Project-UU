@@ -155,11 +155,6 @@ public class Game(string name, Character character, List<Command> commands)
         return game;
     }
 
-    public int TotalNumberOfCommands()
-    {
-        return _commands.Sum(c => c.NumberOfCommands());
-    }
-
     public override string ToString()
     {
         var cmds = from com in _commands select com.ToString();
