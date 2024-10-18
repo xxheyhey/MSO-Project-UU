@@ -55,6 +55,7 @@ public class Game(string name, Character character, List<Command> commands)
 
         return maxNestingLevel;
     }
+
     private int CountRepeatCommands(List<Command> commands)
     {
         int repeatCount = 0;
@@ -126,7 +127,6 @@ public class Game(string name, Character character, List<Command> commands)
 
     public void CalculateMetrics()
     {
-
         int maxNestingLevel = GetMaxNestingLevel(_commands);
         int numberofRepeats = CountRepeatCommands(_commands);
         int numberOfCommands = 0;

@@ -10,6 +10,7 @@ namespace MSO_Project
         {
             Run();
         }
+
         private static string? readValue(List<string> expected_inputs)
         {
             string? input = Console.ReadLine();
@@ -50,6 +51,7 @@ namespace MSO_Project
                     Console.Write("Type 1, 2 or 3: ");
                     input2 = readValue(["1", "2", "3"]);
                 }
+
                 game = Game.Examples[int.Parse(input2) - 1];
             }
             else
@@ -78,6 +80,7 @@ namespace MSO_Project
                 game.CalculateMetrics();
             }
         }
+
         private static string GetFile()
         {
             // Get the user's Downloads directory:
