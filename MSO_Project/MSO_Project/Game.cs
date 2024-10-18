@@ -52,35 +52,35 @@ public class Game(string name, Character character, List<Command> commands)
         Console.WriteLine(this);
     }
 
+    private int GetMaxNestingLevel(List<Command> commands)
+    {
+        int maxNestingLevel = 1; // Minimum of 1 for programs without repeats
+
+        foreach (var command in commands)
+        {
+            maxNestingLevel = Math.Max(maxNestingLevel, command.MaxNestingLevel());
+        }
+
+        return maxNestingLevel;
+    }
+    private int CountRepeatCommands(List<Command> commands)
+    {
+        int repeatCount = 0;
+
+        foreach (var command in commands)
+        {
+            if (command is Repeat repeatCommand)
+            {
+                repeatCount++;
+                repeatCount += CountRepeatCommands(repeatCommand.Commands);
+            }
+        }
+
+        return repeatCount;
+    }
+
     public void CalculateMetrics()
     {
-        int GetMaxNestingLevel(List<Command> commands)
-        {
-            int maxNestingLevel = 1; // Minimum of 1 for programs without repeats
-
-            foreach (var command in commands)
-            {
-                maxNestingLevel = Math.Max(maxNestingLevel, command.MaxNestingLevel());
-            }
-
-            return maxNestingLevel;
-        }
-
-        int CountRepeatCommands(List<Command> commands)
-        {
-            int repeatCount = 0;
-
-            foreach (var command in commands)
-            {
-                if (command is Repeat repeatCommand)
-                {
-                    repeatCount++;
-                    repeatCount += CountRepeatCommands(repeatCommand.Commands);
-                }
-            }
-
-            return repeatCount;
-        }
 
         int maxNestingLevel = GetMaxNestingLevel(_commands);
         int numberofRepeats = CountRepeatCommands(_commands);
@@ -104,9 +104,9 @@ public class Game(string name, Character character, List<Command> commands)
         {
             string[] words = line.Split();
 
-            if (words[0] == "Move")
+            if (words[0] == "move")
                 game._commands.Add(new Move(int.Parse(words[1])));
-            else if (words[0] == "Turn")
+            else if (words[0] == "turn")
                 game._commands.Add(new Turn(words[1]));
         }
 
