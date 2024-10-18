@@ -35,7 +35,7 @@ namespace MSO_Project
             string? input1 = null;
             while (input1 == null)
             {
-                Console.WriteLine("Do you want to choose an example program or load a program file from your Desktop directory?");
+                Console.WriteLine("Do you want to choose an example program or load a program file from your Documents directory?");
                 Console.WriteLine("1. Choose example program\n2. Load file");
                 Console.Write("Type 1 or 2: ");
                 input1 = _readValue(["1", "2"]);
@@ -55,10 +55,11 @@ namespace MSO_Project
                 }
 
                 game = Game.Examples[int.Parse(input2) - 1];
+                Console.Clear();
             }
             else
             {
-                Console.WriteLine("Specify a file in your Desktop directory:");
+                Console.WriteLine("Specify a file in your Documents directory:");
                 string file = GetFile();
                 game = Game.Import(file);
             }
@@ -76,25 +77,27 @@ namespace MSO_Project
             if (input3 == "1")
             {
                 game.Execute();
+                Console.ReadLine();
             }
             else
             {
                 game.CalculateMetrics();
+                Console.ReadLine();
             }
         }
 
         private static string GetFile()
         {
-            // Get the user's Desktop directory:
+            // Get the user's Documents directory:
             string homePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            string desktopPath = Path.Combine(homePath, "Desktop");
+            string documentspath = Path.Combine(homePath, "Documents");
 
-            Console.WriteLine($"The Desktop directory is: {desktopPath}");
+            Console.WriteLine($"The Documents directory is: {documentspath}");
 
             string? filePath;
             while (true)
             {
-                Console.Write("Please enter the file name (in the Desktop folder): ");
+                Console.Write("Please enter the file name (in the Documents folder): ");
                 string? fileName = Console.ReadLine();
 
                 if (string.IsNullOrEmpty(fileName))
@@ -103,7 +106,7 @@ namespace MSO_Project
                     continue;
                 }
 
-                filePath = Path.Combine(desktopPath, fileName);
+                filePath = Path.Combine(documentspath, fileName);
                 if (File.Exists(filePath))
                 {
                     Console.Clear();
@@ -111,7 +114,7 @@ namespace MSO_Project
                     break;
                 }
 
-                Console.WriteLine("File does not exist in the Desktop folder. Please try again.");
+                Console.WriteLine("File does not exist in the Documents folder. Please try again.");
             }
 
             return filePath;
