@@ -11,8 +11,8 @@ public class Game(string name, Character character, List<Command> commands)
     private Character _character { get; } = character;
     private List<Command> _commands { get; } = commands;
 
-    public static List<Game> Examples = new List<Game>
-    {
+    public static readonly List<Game> Examples =
+    [
         new Game("beginner", new Character(), [
             new Move(10),
             new Turn("right"),
@@ -22,6 +22,7 @@ public class Game(string name, Character character, List<Command> commands)
             new Move(10),
             new Turn("right")
         ]),
+
         new Game("intermediate", new Character(), [
             new Repeat(4, [
                 new Move(10),
@@ -31,6 +32,7 @@ public class Game(string name, Character character, List<Command> commands)
                 new Turn("right")
             ])
         ]),
+
         new Game("advanced", new Character(), [
             new Move(5),
             new Turn("left"),
@@ -40,7 +42,7 @@ public class Game(string name, Character character, List<Command> commands)
             new Repeat(3, [new Move(1), new Turn("right"), new Repeat(5, [new Move(2)])]),
             new Turn("left"),
         ])
-    };
+    ];
 
     // Private helper methods:
 
@@ -128,7 +130,7 @@ public class Game(string name, Character character, List<Command> commands)
     public void CalculateMetrics()
     {
         int maxNestingLevel = GetMaxNestingLevel(_commands);
-        int numberofRepeats = CountRepeatCommands(_commands);
+        int numberOfRepeats = CountRepeatCommands(_commands);
         int numberOfCommands = 0;
         foreach (Command c in _commands)
         {
@@ -138,7 +140,7 @@ public class Game(string name, Character character, List<Command> commands)
         Console.WriteLine($"Program: {_name}\n"
                           + $"Number of commands: {numberOfCommands}\n"
                           + $"Maximum nesting level: {maxNestingLevel}\n"
-                          + $"Number of repeats: {numberofRepeats}");
+                          + $"Number of repeats: {numberOfRepeats}");
     }
 
     public static Game Import(string file)
@@ -155,9 +157,9 @@ public class Game(string name, Character character, List<Command> commands)
 
     public override string ToString()
     {
-        var comms = from com in _commands select com.ToString();
+        var cmds = from com in _commands select com.ToString();
         return $"Program: {_name}\n"
-               + $"{string.Join(", ", comms)}.\n"
+               + $"{string.Join(", ", cmds)}.\n"
                + $"End state {_character.Position} facing {_character.Orientation}.";
     }
 }

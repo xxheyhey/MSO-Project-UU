@@ -11,10 +11,10 @@ namespace MSO_Project
             Run();
         }
 
-        private static string? readValue(List<string> expected_inputs)
+        private static string? _readValue(List<string> expectedInputs)
         {
             string? input = Console.ReadLine();
-            foreach (string s in expected_inputs)
+            foreach (string s in expectedInputs)
             {
                 if (input == s)
                 {
@@ -29,14 +29,14 @@ namespace MSO_Project
 
         private static void Run()
         {
-            Game? game = null;
+            Game? game;
             string? input1 = null;
             while (input1 == null)
             {
                 Console.WriteLine("Do you want to choose an example program or load a program file from your Downloads directory?");
                 Console.WriteLine("1. Choose example program\n2. Load file");
                 Console.Write("Type 1 or 2: ");
-                input1 = readValue(["1", "2"]);
+                input1 = _readValue(["1", "2"]);
             }
 
             Console.Clear();
@@ -47,9 +47,9 @@ namespace MSO_Project
                 while (input2 == null)
                 {
                     Console.WriteLine("Choose one of the following example programs:");
-                    Console.WriteLine("1. Beginner\n2. Intemediate\n3. Advanced");
+                    Console.WriteLine("1. Beginner\n2. Intermediate\n3. Advanced");
                     Console.Write("Type 1, 2 or 3: ");
-                    input2 = readValue(["1", "2", "3"]);
+                    input2 = _readValue(["1", "2", "3"]);
                 }
 
                 game = Game.Examples[int.Parse(input2) - 1];
@@ -67,7 +67,7 @@ namespace MSO_Project
                 Console.WriteLine("Do you want to execute the program or analyze its metrics?");
                 Console.WriteLine("1. Execute\n2. Analyze metrics");
                 Console.Write("Type 1 or 2: ");
-                input3 = readValue(["1", "2"]);
+                input3 = _readValue(["1", "2"]);
             }
 
             Console.Clear();
@@ -89,7 +89,7 @@ namespace MSO_Project
 
             Console.WriteLine($"The Downloads directory is: {downloadsPath}");
 
-            string? filePath = null;
+            string? filePath;
             while (true)
             {
                 Console.Write("Please enter the file name (in the Downloads folder): ");
