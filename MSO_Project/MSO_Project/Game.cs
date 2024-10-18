@@ -100,17 +100,55 @@ public class Game(string name, Character character, List<Command> commands)
     {
         Game game = new Game(file, new Character(), new List<Command>());
 
-        foreach (string line in File.ReadLines(file))
-        {
-            string[] words = line.Split();
+        List<string> lines = File.ReadLines(file).ToList();
+        List<Command> commands = ParseCommands(lines, 0);
 
-            if (words[0] == "move")
-                game._commands.Add(new Move(int.Parse(words[1])));
-            else if (words[0] == "turn")
-                game._commands.Add(new Turn(words[1]));
-        }
+        game._commands.AddRange(commands);
 
         return game;
+    }
+
+    private static List<Command> ParseCommands(List<string> lines, int indentationLevel)
+    {
+        List<Command> commands = new List<Command>();
+
+        for (int i = 0; i < lines.Count; i++)
+        {
+            string line = lines[i];
+
+            int currentIndentation = line.TakeWhile(c => c == '\t').Count();
+
+            // Skip lines that do not match the current indentation level
+            if (currentIndentation != indentationLevel)
+                continue;
+
+            line = line.TrimStart('\t');
+            string[] words = line.Split();
+
+            if (words[0].ToLower() == "move")
+            {
+                commands.Add(new Move(int.Parse(words[1])));
+            }
+            else if (words[0].ToLower() == "turn")
+            {
+                commands.Add(new Turn(words[1]));
+            }
+            else if (words[0].ToLower() == "repeat")
+            {
+                int iterations = int.Parse(words[1]);
+
+                List<string> nestedLines = lines.Skip(i + 1).ToList(); // This collects all the commands within a repeat block
+
+                // This recursively parses the nested commands
+                List<Command> nestedCommands = ParseCommands(nestedLines, indentationLevel + 1);
+
+                commands.Add(new Repeat(iterations, nestedCommands));
+
+                i += nestedCommands.Count; // Continuing the parsing after the repeat block
+            }
+        }
+
+        return commands;
     }
 
     public override string ToString()
