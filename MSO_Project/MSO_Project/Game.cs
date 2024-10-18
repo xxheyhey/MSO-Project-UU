@@ -46,11 +46,11 @@ public class Game(string name, Character character, List<Command> commands)
 
     // Private helper methods:
 
-    private int GetMaxNestingLevel(List<Command> commands)
+    private int GetMaxNestingLevel()
     {
         int maxNestingLevel = 1; // Minimum of 1 for programs without repeats
 
-        foreach (var command in commands)
+        foreach (var command in _commands)
         {
             maxNestingLevel = Math.Max(maxNestingLevel, command.MaxNestingLevel());
         }
@@ -58,17 +58,15 @@ public class Game(string name, Character character, List<Command> commands)
         return maxNestingLevel;
     }
 
-    private int CountRepeatCommands(List<Command> commands)
+    private static int CountRepeatCommands(List<Command> commands)
     {
         int repeatCount = 0;
 
         foreach (var command in commands)
         {
-            if (command is Repeat repeatCommand)
-            {
-                repeatCount++;
-                repeatCount += CountRepeatCommands(repeatCommand.Commands);
-            }
+            if (command is not Repeat repeatCommand) continue;
+            repeatCount++;
+            repeatCount += CountRepeatCommands(repeatCommand.Commands);
         }
 
         return repeatCount;
@@ -76,7 +74,7 @@ public class Game(string name, Character character, List<Command> commands)
 
     private static List<Command> ParseCommands(List<string> lines, int indentationLevel)
     {
-        List<Command> commands = new List<Command>();
+        List<Command> commands = [];
 
         for (int i = 0; i < lines.Count; i++)
         {
@@ -91,26 +89,28 @@ public class Game(string name, Character character, List<Command> commands)
             line = line.TrimStart('\t');
             string[] words = line.Split();
 
-            if (words[0].ToLower() == "move")
+            switch (words[0].ToLower())
             {
-                commands.Add(new Move(int.Parse(words[1])));
-            }
-            else if (words[0].ToLower() == "turn")
-            {
-                commands.Add(new Turn(words[1]));
-            }
-            else if (words[0].ToLower() == "repeat")
-            {
-                int iterations = int.Parse(words[1]);
+                case "move":
+                    commands.Add(new Move(int.Parse(words[1])));
+                    break;
+                case "turn":
+                    commands.Add(new Turn(words[1]));
+                    break;
+                case "repeat":
+                {
+                    int iterations = int.Parse(words[1]);
 
-                List<string> nestedLines = lines.Skip(i + 1).ToList(); // This collects all the commands within a repeat block
+                    List<string> nestedLines = lines.Skip(i + 1).ToList(); // This collects all the commands within a repeat block
 
-                // This recursively parses the nested commands
-                List<Command> nestedCommands = ParseCommands(nestedLines, indentationLevel + 1);
+                    // This recursively parses the nested commands
+                    List<Command> nestedCommands = ParseCommands(nestedLines, indentationLevel + 1);
 
-                commands.Add(new Repeat(iterations, nestedCommands));
+                    commands.Add(new Repeat(iterations, nestedCommands));
 
-                i += nestedCommands.Count; // Continuing the parsing after the repeat block
+                    i += nestedCommands.Count; // Continuing the parsing after the repeat block
+                    break;
+                }
             }
         }
 
@@ -129,7 +129,7 @@ public class Game(string name, Character character, List<Command> commands)
 
     public void CalculateMetrics()
     {
-        int maxNestingLevel = GetMaxNestingLevel(_commands);
+        int maxNestingLevel = GetMaxNestingLevel();
         int numberOfRepeats = CountRepeatCommands(_commands);
         int numberOfCommands = 0;
         foreach (Command c in _commands)

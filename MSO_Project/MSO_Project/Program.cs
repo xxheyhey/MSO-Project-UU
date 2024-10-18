@@ -6,6 +6,8 @@ namespace MSO_Project
 {
     internal static class Program
     {
+        // This class will change drastically once we change from a CLI to a GUI platform.
+
         private static void Main()
         {
             Run();

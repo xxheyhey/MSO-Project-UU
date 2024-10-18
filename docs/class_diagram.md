@@ -19,10 +19,9 @@ classDiagram
     }
     class Repeat{
         -int iterations
-        -List~Command~ commands
+        +List~Command~ commands
     }
     class Character{
-        -string name
         +(int,int) Position
         +string Orientation
     }
@@ -31,8 +30,8 @@ classDiagram
         -Character character
         -List~Command~ commands
         +List~Game~ Examples$
-        +Execute() void
-        +CalculateMetrics() void
-        +Import(String file) void
+        +Execute()
+        +CalculateMetrics()
+        +Game Import(string file)$
     }
 ```

@@ -18,28 +18,26 @@ public class Turn(string direction) : Command
 
     public override void Execute(Character character)
     {
-        if (_direction == "right")
+        character.Orientation = _direction switch
         {
-            character.Orientation = character.Orientation switch
+            "right" => character.Orientation switch
             {
                 "east" => "south",
                 "west" => "north",
                 "north" => "east",
                 "south" => "west",
                 _ => character.Orientation
-            };
-        }
-        else if (_direction == "left")
-        {
-            character.Orientation = character.Orientation switch
+            },
+            "left" => character.Orientation switch
             {
                 "east" => "north",
                 "west" => "south",
                 "north" => "west",
                 "south" => "east",
                 _ => character.Orientation
-            };
-        }
+            },
+            _ => character.Orientation
+        };
     }
 
     public override int NumberOfCommands() => 1;
@@ -118,7 +116,7 @@ public class Repeat(int iterations, List<Command> commands) : Command
 
     public override string ToString()
     {
-        List<string> comms = new List<string>();
+        List<string> comms = [];
         for (int i = 0; i < _iterations; i++)
         {
             foreach (Command c in Commands)
