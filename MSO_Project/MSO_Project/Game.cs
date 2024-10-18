@@ -42,15 +42,7 @@ public class Game(string name, Character character, List<Command> commands)
         ])
     };
 
-    public void Execute()
-    {
-        foreach (var c in _commands)
-        {
-            c.Execute(_character);
-        }
-
-        Console.WriteLine(this);
-    }
+    // Private helper methods:
 
     private int GetMaxNestingLevel(List<Command> commands)
     {
@@ -77,35 +69,6 @@ public class Game(string name, Character character, List<Command> commands)
         }
 
         return repeatCount;
-    }
-
-    public void CalculateMetrics()
-    {
-
-        int maxNestingLevel = GetMaxNestingLevel(_commands);
-        int numberofRepeats = CountRepeatCommands(_commands);
-        int numberOfCommands = 0;
-        foreach (Command c in _commands)
-        {
-            numberOfCommands += c.NumberOfCommands();
-        }
-
-        Console.WriteLine($"Program: {_name}\n"
-                          + $"Number of commands: {numberOfCommands}\n"
-                          + $"Maximum nesting level: {maxNestingLevel}\n"
-                          + $"Number of repeats: {numberofRepeats}");
-    }
-
-    public static Game Import(string file)
-    {
-        Game game = new Game(file, new Character(), new List<Command>());
-
-        List<string> lines = File.ReadLines(file).ToList();
-        List<Command> commands = ParseCommands(lines, 0);
-
-        game._commands.AddRange(commands);
-
-        return game;
     }
 
     private static List<Command> ParseCommands(List<string> lines, int indentationLevel)
@@ -149,6 +112,45 @@ public class Game(string name, Character character, List<Command> commands)
         }
 
         return commands;
+    }
+
+    public void Execute()
+    {
+        foreach (var c in _commands)
+        {
+            c.Execute(_character);
+        }
+
+        Console.WriteLine(this);
+    }
+
+    public void CalculateMetrics()
+    {
+
+        int maxNestingLevel = GetMaxNestingLevel(_commands);
+        int numberofRepeats = CountRepeatCommands(_commands);
+        int numberOfCommands = 0;
+        foreach (Command c in _commands)
+        {
+            numberOfCommands += c.NumberOfCommands();
+        }
+
+        Console.WriteLine($"Program: {_name}\n"
+                          + $"Number of commands: {numberOfCommands}\n"
+                          + $"Maximum nesting level: {maxNestingLevel}\n"
+                          + $"Number of repeats: {numberofRepeats}");
+    }
+
+    public static Game Import(string file)
+    {
+        Game game = new Game(file, new Character(), new List<Command>());
+
+        List<string> lines = File.ReadLines(file).ToList();
+        List<Command> commands = ParseCommands(lines, 0);
+
+        game._commands.AddRange(commands);
+
+        return game;
     }
 
     public override string ToString()
