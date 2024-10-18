@@ -35,7 +35,7 @@ namespace MSO_Project
             string? input1 = null;
             while (input1 == null)
             {
-                Console.WriteLine("Do you want to choose an example program or load a program file from your Downloads directory?");
+                Console.WriteLine("Do you want to choose an example program or load a program file from your Desktop directory?");
                 Console.WriteLine("1. Choose example program\n2. Load file");
                 Console.Write("Type 1 or 2: ");
                 input1 = _readValue(["1", "2"]);
@@ -58,7 +58,7 @@ namespace MSO_Project
             }
             else
             {
-                Console.WriteLine("Specify a file in your Downloads directory:");
+                Console.WriteLine("Specify a file in your Desktop directory:");
                 string file = GetFile();
                 game = Game.Import(file);
             }
@@ -85,16 +85,16 @@ namespace MSO_Project
 
         private static string GetFile()
         {
-            // Get the user's Downloads directory:
+            // Get the user's Desktop directory:
             string homePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            string downloadsPath = Path.Combine(homePath, "Downloads");
+            string desktopPath = Path.Combine(homePath, "Desktop");
 
-            Console.WriteLine($"The Downloads directory is: {downloadsPath}");
+            Console.WriteLine($"The Desktop directory is: {desktopPath}");
 
             string? filePath;
             while (true)
             {
-                Console.Write("Please enter the file name (in the Downloads folder): ");
+                Console.Write("Please enter the file name (in the Desktop folder): ");
                 string? fileName = Console.ReadLine();
 
                 if (string.IsNullOrEmpty(fileName))
@@ -103,7 +103,7 @@ namespace MSO_Project
                     continue;
                 }
 
-                filePath = Path.Combine(downloadsPath, fileName);
+                filePath = Path.Combine(desktopPath, fileName);
                 if (File.Exists(filePath))
                 {
                     Console.Clear();
@@ -111,7 +111,7 @@ namespace MSO_Project
                     break;
                 }
 
-                Console.WriteLine("File does not exist in the Downloads folder. Please try again.");
+                Console.WriteLine("File does not exist in the Desktop folder. Please try again.");
             }
 
             return filePath;
