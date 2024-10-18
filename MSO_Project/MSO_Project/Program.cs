@@ -4,7 +4,7 @@ using System.IO;
 
 namespace MSO_Project
 {
-    internal static class Program
+    public static class Program
     {
         // This class will change drastically once we change from a CLI to a GUI platform.
 
@@ -86,7 +86,7 @@ namespace MSO_Project
             }
         }
 
-        private static string GetFile()
+        public static string GetFile()
         {
             // Get the user's Documents directory:
             string homePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
