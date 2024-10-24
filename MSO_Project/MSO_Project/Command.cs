@@ -116,7 +116,7 @@ public class Repeat(int iterations, List<Command> commands) : Command
 
     public override string ToString()
     {
-        List<string> comms = [];
+        List<string> comms = new List<string>();
         for (int i = 0; i < _iterations; i++)
         {
             foreach (Command c in Commands)
